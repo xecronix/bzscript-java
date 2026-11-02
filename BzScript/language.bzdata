@@ -1,0 +1,67 @@
+!|spelling|  |spelling_const|        |kind|                  |eval_handler|;
+! 
+	In this file Symbols and Keywords mark data boundaries.  They are more significant
+	than usual comments.  Currently, LanguageBuilder.java in the BzBuilder project depends
+	on these values.
+;
+
+! Symbols;
+|;|          |symStatementEnd|       |STATEMENT_END|         ||;
+|,|          |symListSeparator|      |LIST_SEPARATOR|        ||;
+|#|          |symVarNumber|          |VAR_NUMBER|            |SymVarNumber|;
+|$|          |symVarString|          |VAR_STRING|            |SymVarString|;
+|(|          |symGroupOpen|          |GROUP_OPEN|            ||;
+|)|          |symGroupClose|         |GROUP_CLOSE|           ||;
+|{|          |symBlockOpen|          |BLOCK_OPEN|            |SymBlockOpen|;
+|}|          |symBlockClose|         |BLOCK_CLOSE|           ||;
+|+|          |symAddition|           |ADDITION|              |SymAddition|;
+|-|          |symSubtraction|        |SUBTRACTION|           |SymSubtraction|;
+|*|          |symMultiply|           |MULTIPLY|              |SymMultiply|;
+|/|          |symDivide|             |DIVIDE|                |SymDivide|;
+|^|          |symExponent|           |EXPONENT|              |SymExponent|;
+|=|          |symAssign|             |ASSIGN|                |SymAssign|;
+|==|         |symCompareEq|          |COMPARE_EQ|            |SymCompareEq|;
+|>|          |symCompareGreater|     |COMPARE_GREATER|       |SymCompareGreater|;
+|<|          |symCompareLess|        |COMPARE_LESS|          |SymCompareLess|;
+|>=|         |symCompareGreaterEq|   |COMPARE_GREATER_EQ|    |SymCompareGreaterEq|;
+|<=|         |symCompareLessEq|      |COMPARE_LESS_EQ|       |SymCompareLessEq|;
+|!=|         |symCompareNotEq|       |COMPARE_NOT_EQ|        |SymCompareNotEq|;
+|//|         |symComment|            |COMMENT|               ||;
+|`|          |symStringDelimiter|    |STRING_DELIMITER|      ||;
+|!|          |symExclamation|        |RESERVED|              ||;
+|"|          |symDoubleQuote|        |RESERVED|              ||;
+|%|          |symPercent|            |RESERVED|              ||;
+|&|          |symAmpersand|          |RESERVED|              ||;
+|'|          |symSingleQuote|        |RESERVED|              ||;
+|:|          |symColon|              |RESERVED|              ||;
+|?|          |symQuestion|           |RESERVED|              ||;
+|@|          |symAt|                 |RESERVED|              ||;
+|[|          |symBracketOpen|        |RESERVED|              ||;
+|]|          |symBracketClose|       |RESERVED|              ||;
+|\\|         |symBackSlash|          |RESERVED|              ||;
+|\||         |symPipe|               |RESERVED|              ||;
+|~|          |symTilde|              |RESERVED|              ||;
+
+! Keywords;
+|let|        |kwLet|                 |KW_LET|                |KwLet|;
+|if|         |kwIf|                  |KW_IF|                 |KwIf|;
+|elseif|     |kwElseIf|              |KW_ELSE_IF|            |KwElseIf|;
+|else|       |kwElse|                |KW_ELSE|               |KwElse|;
+|loop|       |kwLoop|                |KW_LOOP|               |KwLoop|;
+|continue|   |kwContinue|            |KW_CONTINUE|           |KwContinue|;
+|break|      |kwBreak|               |KW_BREAK|              |KwBreak|;
+
+! Functions;
+! input/output;
+|print|      |funPrint|              |LANG_FUN|              |FunPrint|;
+|println|    |funPrintLn|            |LANG_FUN|              |FunPrintLn|;
+|printnum|   |funPrintNum|           |LANG_FUN|              |FunPrintNum|;
+|nl|         |funNewLine|            |LANG_FUN|              |FunNewLine|;
+|inputn|     |funInputNumber|        |LANG_FUN|              |FunInputNumber|;
+|inputs|     |funInputString|        |LANG_FUN|              |FunInputString|;
+
+! string functions;
+|len|        |funLen|                |LANG_FUN|              |FunLen|;
+|strcat|     |funStrCat|             |LANG_FUN|              |FunStrCat|;
+|midstr|     |funMidStr|             |LANG_FUN|              |FunMidStr|;
+|strcomp|    |funStrComp|            |LANG_FUN|              |FunStrComp|;

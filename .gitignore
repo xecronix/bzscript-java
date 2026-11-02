@@ -1,0 +1,9 @@
+/backups/
+/.metadata/
+**/bin/
+**/.jar-build/
+*.class
+.env
+.env.*
+*.pem
+*.key
