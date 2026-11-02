@@ -19,3 +19,7 @@ Additional Java drafts in BzScript/ant and BzScript/Evaluator.java are preserved
 ## Backup scope
 
 Includes source, tests, templates, .bzdata files, documentation, Eclipse project settings and bundled jars. Excludes Eclipse workspace metadata, compiled class files, bin and .jar-build output directories, local backup archives, and credential file patterns in .gitignore. The dated local ZIP additionally preserves compiled outputs. No source files were refactored to make this snapshot build.
+
+## Crude snapshots
+
+Run crude-backup.bat to snapshot this workspace into C:\CRUDE using the installed Crude executable. The script checks C:\CRUDE\crude.exe then C:\dev\crude\crude.exe. Crude prompts for description and direction notes; finish each with a single dot on its own line. The wrapper does not clean or delete any files. Usage is based on https://github.com/xecronix/crude/blob/HEAD/QuickStart.md. This interactive snapshot command was not run as part of the GitHub backup.
