@@ -5,7 +5,9 @@ import java.util.*;
 
 public class Evaluator {
 	Map<Bz.Kind, IAnt> ants;
+	private EvaluatorState evalState ;
 	public Evaluator() {
+		evalState = new EvaluatorState();
 		ants = new HashMap<Bz.Kind, IAnt>();
 		ants.put(Bz.Kind.LANG_FUN, new LangFun(this));
 		ants.put(Bz.Kind.LITERAL_STRING, new LiteralString(this));
@@ -21,5 +23,9 @@ public class Evaluator {
 			throw new Exception ("Could not find Ant for token [%s]".formatted(t.toJSON()));
 		}
 		return ant.exe(t);
+	}
+	
+	public EvaluatorState getState(){
+		return evalState;
 	}
 }

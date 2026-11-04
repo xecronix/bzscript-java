@@ -71,6 +71,22 @@ class ParserTests {
         assertEquals(List.of("2", "3"), product.tokens.stream().map(t -> t.name).toList());
     }
 
+    @Test void preservesRightAssociativeExponentiationInsideAddition() throws Exception {
+        AstToken root = parse("1 + 2 ^ 3 ^ 2;");
+        assertEquals(1, root.tokens.size());
+        AstToken sum = root.tokens.getFirst();
+        assertEquals(Kind.ADDITION, sum.kind);
+        assertEquals(2, sum.tokens.size());
+        assertEquals("1", sum.tokens.getFirst().name);
+        AstToken power = sum.tokens.get(1);
+        assertEquals(Kind.EXPONENT, power.kind);
+        assertEquals(2, power.tokens.size());
+        assertEquals("2", power.tokens.getFirst().name);
+        AstToken exponent = power.tokens.get(1);
+        assertEquals(Kind.EXPONENT, exponent.kind);
+        assertEquals(List.of("3", "2"), exponent.tokens.stream().map(t -> t.name).toList());
+    }
+
     @Test void rejectsMissingBinaryOperands() {
         rejects("* 1;", "Expected token before [*] on line [1] column [1]");
         rejects("1 +;", "Expected token after [+] on line [1] column [3]");

@@ -11,6 +11,8 @@ public class BzScript {
 		//String bzcode = "printnum(strcomp(`same`, `same`));nl();";
 		String bzcode = "printnum(2^3^2);nl();";
 		bzcode += "printnum(-2^-3^2);nl();";
+		bzcode += "printnum(2^-3);nl();";
+		bzcode += "printnum(1 + 2 ^ 3 ^ 2);nl();";
 		bzcode += "printnum(2--1);nl();";
 		
 		
