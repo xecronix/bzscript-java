@@ -21,7 +21,8 @@ public class Parser {
 		BOOL,
 		ASSIGNMENT,
 		LET, 
-		CONDITION_IF	
+		CONDITION_IF,
+		UNCONDIONAL_BLOCK
 	};
 	
 	private List<Bz.Kind> boolKinds;
@@ -29,36 +30,18 @@ public class Parser {
 	private List<Bz.Kind> multiKinds;
 	private List<Bz.Kind> unaryKinds;
 	private List<Bz.Kind> exponentTerms;
+	private List<Bz.Kind> unconditionalBlocks;
+	private List<Bz.Kind> conditionalBlocks;
 		
 	private Parser(List<AstToken> t) throws Exception{
 		cursor = new Cursor<AstToken>(t);
-		boolKinds = new ArrayList<Bz.Kind>();
-		boolKinds.add(Bz.Kind.COMPARE_EQ);
-		boolKinds.add(Bz.Kind.COMPARE_NOT_EQ);
-		boolKinds.add(Bz.Kind.COMPARE_GREATER);
-		boolKinds.add(Bz.Kind.COMPARE_GREATER_EQ);
-		boolKinds.add(Bz.Kind.COMPARE_LESS);
-		boolKinds.add(Bz.Kind.COMPARE_LESS_EQ);
-
-		addKinds = new ArrayList<Bz.Kind>();
-		addKinds.add(Bz.Kind.ADDITION);
-		addKinds.add(Bz.Kind.SUBTRACTION);
-
-		multiKinds = new ArrayList<Bz.Kind>();
-		multiKinds.add(Bz.Kind.MULTIPLY);
-		multiKinds.add(Bz.Kind.DIVIDE);
-		
-		unaryKinds = new ArrayList<Bz.Kind>();
-		unaryKinds.add(Bz.Kind.UNARY_NEGATIVE);
-		unaryKinds.add(Bz.Kind.UNARY_POSITIVE);
-		
-		exponentTerms = new ArrayList<Bz.Kind>();
-		exponentTerms.add(Bz.Kind.LITERAL_NUMBER);
-		exponentTerms.add(Bz.Kind.VAR_NUMBER);
-		exponentTerms.add(Bz.Kind.LANG_FUN);
-		exponentTerms.add(Bz.Kind.GROUP_OPEN);
-		
-		
+		boolKinds = KindGroups.getBooleans();
+		addKinds = KindGroups.getAdditive();
+		multiKinds = KindGroups.getMultiplicative();		
+		unaryKinds = KindGroups.getUnarys();
+		exponentTerms = KindGroups.getExponentTerms();
+		unconditionalBlocks = KindGroups.getUnconditionalBlocks();
+		conditionalBlocks = KindGroups.getConditionalBlocks();
 	} 
 	
 	private void reduceBinaryOp(List<AstToken> target, List<Bz.Kind> kinds) throws Exception{
@@ -164,13 +147,15 @@ public class Parser {
 				else if (c.kind == Bz.Kind.KW_LET) {
 					plan.add(ParseOrder.LET);
 				}
-				else if (c.kind == Bz.Kind.KW_IF) {
+				else if (conditionalBlocks.contains(c.kind)) {
 					plan.add(ParseOrder.CONDITION_IF);
+				}
+				else if (unconditionalBlocks.contains(c.kind)) {
+					plan.add(ParseOrder.UNCONDIONAL_BLOCK);
 				}
 				// add the current token to target.
 				target.add(c);
-			}
-			
+			}			
 			 
 			if (!cursor.next()) {break;}
 		}
@@ -355,27 +340,59 @@ public class Parser {
 		}
 	}
 	
+
+	private void opUnconditionalBlock(List<AstToken> target) throws Exception{
+		while (true) {
+			AstToken c = cursor.current();
+			if (unconditionalBlocks.contains(c.kind )){
+				AstToken peek = cursor.tryPeek();
+				boolean didPeek = peek != null; 
+				
+				if (didPeek && peek.kind == Bz.Kind.BLOCK_OPEN) {
+					c.tokens.add(peek);
+					cursor.next();
+				}
+				else if (didPeek){
+					throw new Exception("Expected block but found [%s] on line [%d] column [%d]"
+							.formatted(peek.name, peek.lineNumber, peek.columnNumber));
+				}
+				else {
+					throw new Exception("Expected block after [%s] on line [%d] column [%d]"
+							.formatted(c.name, c.lineNumber, c.columnNumber));
+				}
+			} 
+			
+			
+			target.add(c);
+			
+			if (!cursor.next()) {break;}	
+		}
+	}
+	
 	private void opIf(List<AstToken> target) throws Exception{
 		while (true) {
 			AstToken c = cursor.current();
-			if (c.kind == Bz.Kind.KW_IF || c.kind == Bz.Kind.KW_ELSE_IF ){
+			if (conditionalBlocks.contains(c.kind) ){
 				AstToken peek = cursor.tryPeek();
 				boolean didPeek = peek != null;
 				
 				if (didPeek && peek.kind == Bz.Kind.GROUP_OPEN) {
-					if (peek.tokens.isEmpty()) {
-						throw new Exception ("Found empty group after [%s] on line [%d] column [%d]"
-								.formatted(c.name, c.lineNumber, c.columnNumber));
-					}
-					else if (peek.tokens.size() != 1) {
-							throw new Exception ("Unexpected group reduction after [%s] on line [%d] column [%d]"
-									.formatted(c.name, c.lineNumber, c.columnNumber));
-					}
-					c.tokens.add(peek); 
+					c.tokens.add(tokOrGrp(peek)); 
 				}
 				else {
 					throw new Exception("Expected condition after [%s] on line [%d] column [%d]"
 							.formatted(c.name, c.lineNumber, c.columnNumber));
+				}
+				cursor.next();
+				peek = cursor.tryPeek();
+				didPeek = peek != null;
+				
+				if (didPeek && peek.kind == Bz.Kind.BLOCK_OPEN){
+					c.tokens.add(peek);
+				}
+				else {
+					throw new Exception("Expected a new block but found [%s] on line [%d] column [%d]"
+							.formatted(peek.name, peek.lineNumber, peek.columnNumber));
 				}
 				cursor.next(); // consume the peek
 			} 
@@ -443,9 +460,15 @@ public class Parser {
 			else if (p == ParseOrder.CONDITION_IF) {
 				opIf(target);
 			}
+			else if (p == ParseOrder.UNCONDIONAL_BLOCK) {
+				opUnconditionalBlock(target);
+			}
 		}
 		
 		if (target.size() != 1){
+			for (AstToken t : target) {
+				System.out.println(t.toJSON());
+			}
 			throw new Exception ("Parse did not evaluate to a single token.");
 		}
 	

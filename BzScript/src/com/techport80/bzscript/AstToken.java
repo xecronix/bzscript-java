@@ -38,4 +38,17 @@ public class AstToken {
 	public String toJSON() {
 	    return JSON.toJson(this);
 	}
+	
+	public void serialize(boolean printHeader, StringBuilder sb) {
+		if (printHeader == true) {
+			sb.append("!|name| |fileName| |lineNumber| |columnNumber| |kind| |tokenCount|;\n");
+		}
+		int tokenCount = tokens.size();
+		sb.append("|%s| |%s| |%s| |%s| |%s| |%d|;\n"
+				.formatted(name, fileName, lineNumber, columnNumber, kind.toString(), tokenCount));
+		
+		for(AstToken child : tokens) {
+			child.serialize(false, sb);
+		}
+	}
 }

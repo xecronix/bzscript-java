@@ -9,7 +9,7 @@ import com.techport80.jlistcursor.*;
 public class SyntaxChecker {
 	
 	Cursor<AstToken> cursor;
-	List<String> msg;
+	public List<String> msg;
 	
 	public SyntaxChecker(List<AstToken> tokens) throws Exception {
 		cursor = new Cursor<AstToken>(tokens);

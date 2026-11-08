@@ -11,6 +11,7 @@ public class KwBreak implements IAnt{
 	
 	public EvalMsg exe(AstToken t) throws Exception{
 		EvalMsg evalMsg = new EvalMsg();
-		throw new Exception("KwBreak Not Implemented.");
+		evalMsg.flow = EvalMsg.Flow.BREAK;
+		return evalMsg;
 	}
 }

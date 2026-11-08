@@ -10,7 +10,6 @@ public class KwElse implements IAnt{
 	}
 	
 	public EvalMsg exe(AstToken t) throws Exception{
-		EvalMsg evalMsg = new EvalMsg();
-		throw new Exception("KwElse Not Implemented.");
+		return evaluator.eval(t.tokens.getFirst()); 
 	}
 }

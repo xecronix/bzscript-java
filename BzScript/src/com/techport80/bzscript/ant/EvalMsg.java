@@ -9,6 +9,7 @@ public class EvalMsg {
 	
 	public static enum Flow{
 		NORMAL,
+		ELSEIF,
 		BREAK,
 		CONTINUE
 	};

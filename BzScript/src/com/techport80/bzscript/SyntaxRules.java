@@ -360,6 +360,8 @@ public class SyntaxRules {
             {
                 List<Bz.Kind> ls = new ArrayList<>();
                 
+                ls.add(Bz.Kind.STATEMENT_END);
+                
                 ls.add(Bz.Kind.GROUP_CLOSE);
                 
                 ls.add(Bz.Kind.KW_ELSE);

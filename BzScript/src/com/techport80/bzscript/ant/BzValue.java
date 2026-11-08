@@ -28,6 +28,10 @@ public class BzValue {
 		valString = str;
 	}
 	
+	public ValueKind getKind() {
+		return kind;
+	}
+	
 	public String getString() throws Exception{
 		if (kind !=ValueKind.EMPTY && kind ==ValueKind.STRING){
 			return valString;

@@ -5,7 +5,9 @@ import java.util.*;
 
 public class Evaluator {
 	Map<Bz.Kind, IAnt> ants;
+	public EvaluatorState state ;
 	public Evaluator() {
+		state = new EvaluatorState();
 		ants = new HashMap<Bz.Kind, IAnt>();
 		ants.put(Bz.Kind.LANG_FUN, new LangFun(this));
 		ants.put(Bz.Kind.LITERAL_STRING, new LiteralString(this));

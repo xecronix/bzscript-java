@@ -11,6 +11,7 @@ public class KwContinue implements IAnt{
 	
 	public EvalMsg exe(AstToken t) throws Exception{
 		EvalMsg evalMsg = new EvalMsg();
-		throw new Exception("KwContinue Not Implemented.");
+		evalMsg.flow = EvalMsg.Flow.CONTINUE;
+		return evalMsg;
 	}
 }

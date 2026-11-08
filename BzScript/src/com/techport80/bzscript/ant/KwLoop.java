@@ -11,6 +11,10 @@ public class KwLoop implements IAnt{
 	
 	public EvalMsg exe(AstToken t) throws Exception{
 		EvalMsg evalMsg = new EvalMsg();
-		throw new Exception("KwLoop Not Implemented.");
+		while (evalMsg.flow != EvalMsg.Flow.BREAK) {
+			evalMsg = evaluator.eval(t.tokens.getFirst());
+		}
+		evalMsg.flow = EvalMsg.Flow.NORMAL;
+		return evalMsg;
 	}
 }

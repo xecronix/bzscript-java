@@ -15,7 +15,6 @@ public class FunInputString implements IAnt{
 		EvalMsg evalMsg = new EvalMsg();
 		Scanner scanner = new Scanner(System.in); 
 		evalMsg.value.setString(scanner.nextLine());
-		scanner.close();
 		return evalMsg;
 	}
 }

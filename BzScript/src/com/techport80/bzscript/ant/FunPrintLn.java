@@ -10,11 +10,11 @@ public class FunPrintLn implements IAnt {
 	}
 	
 	public EvalMsg exe(AstToken t) throws Exception {
-		
+		EvalMsg m =new EvalMsg();
 		for (AstToken child : t.tokens) {
-			EvalMsg m = evaluator.eval(child);
+			m = evaluator.eval(child);
 			System.out.println(m.value.getString());
 		}
-		return new EvalMsg();
+		return m;
 	}
 }
